@@ -24,7 +24,10 @@ const Dash = () => {
     const [softState, setSoftState] = useState();
     const [cmdEcho, setCmdEcho] = useState();
     const [mode, setMode] = useState();
-    const [tpR, setTPR] = useState();
+    const [tpR, setTPR] = useState("");
+    
+    const [tData, setTData] = useState();
+    const [tpSoftState, setTpSoftState] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,8 +43,29 @@ const Dash = () => {
                     setGpsSats(response.data[n].GPS_SATS)
                     setSoftState(response.data[n].SOFTWARE_STATE)
                     setCmdEcho(response.data[n].CMD_ECHO)
-                    setMode(response.data[n].MODE)
+                    setMode(response.data[n].MODE) 
                     setTPR(response.data[n].TP_RELEASED)
+                })
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        const id = setInterval(() => {
+            fetchData(); // <-- (3) invoke in interval callback
+        }, 100);
+        fetchData();
+        return () => clearInterval(id);
+    }, [])
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await axios.get('http://localhost:3000/tData.json')
+                .then(response => {
+                    const n = response.data.length - 1; 
+                    setTData(response.data[n])
+                    setTpSoftState(response.data[n].TP_SOFTWARE_STATE)
                 })
             } catch (err) {
                 console.log(err);
@@ -70,7 +94,7 @@ const Dash = () => {
                     <MinigraphB subtype="Gyro" unit="°/s" />
                     <MinigraphB subtype="Mag" unit="gauss" />
                     <Minigraph subtype="Pointing Error" unit="%" color={1}/>
-                    <SoftwareStateTP />
+                    <SoftwareStateTP softState = {tpSoftState}/>
                 </div>
             </div>
             <div className="pt-2 md:pl-2 md:pt-0">
