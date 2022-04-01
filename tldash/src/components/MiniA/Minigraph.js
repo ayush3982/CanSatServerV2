@@ -1,7 +1,7 @@
 import React from "react";
 import RealChart from "./RealChart";
 
-function Minigraph(props) {
+const Minigraph = (props) => {
     return (
         <div className="bg-white flex font-mulish rounded-xl border border-stroke drop-shadow-sm p-4 flex-col relative h-48">
             <h4 className="font-semibold text-base z-10 relative">

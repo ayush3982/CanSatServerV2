@@ -27,6 +27,7 @@ const Dash = () => {
     const [tpR, setTPR] = useState("");
     
     const [tData, setTData] = useState();
+    const [tDataFull, setTDataFull] = useState([]);
     const [tpSoftState, setTpSoftState] = useState();
 
     useEffect(() => {
@@ -57,7 +58,6 @@ const Dash = () => {
         return () => clearInterval(id);
     }, [])
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -66,6 +66,7 @@ const Dash = () => {
                     const n = response.data.length - 1; 
                     setTData(response.data[n])
                     setTpSoftState(response.data[n].TP_SOFTWARE_STATE)
+                    setTDataFull(response.data)
                 })
             } catch (err) {
                 console.log(err);
@@ -77,6 +78,7 @@ const Dash = () => {
         fetchData();
         return () => clearInterval(id);
     }, [])
+
 
     return (
         <div className="grid md:grid-cols-2 grid-cols-1 grid-rows-1 px-10 font-mulish divide-y-2 md:divide-x-2 md:divide-y-0 mb-auto">

@@ -7,15 +7,15 @@ const General = (props) => {
       <div className="flex flex-wrap gap-x-5 gap-y-2">
         <div className="">
           <h2 className="text-base font-semibold leading-tight">Mode</h2>
-          <div className="font-base text-3xl">{props.mode}</div>
+          <div className="font-base text-3xl h-8">{props.mode}</div>
         </div>
         <div className="">
           <h2 className="text-base font-semibold leading-tight">TP_Released</h2>
-          <div className="font-base text-3xl">{props.tp}</div>
+          <div className="font-base text-3xl h-8">{props.tp}</div>
         </div>
         <div className="">
           <h2 className="text-base font-semibold leading-tight">CMD Echo</h2>
-          <div className="font-base text-2xl">{props.cmdE}</div>
+          <div className="font-base text-2xl h-8">{props.cmdE}</div>
         </div>
       </div>
     </div>

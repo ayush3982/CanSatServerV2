@@ -20,9 +20,9 @@ const port = new SerialPort({ path: 'COM5', baudRate: 9600 })
 
 const readSerialData = async (data) => {
     let tel = data
-    // console.log('mango', tel);
+    console.log('mango', tel);
     let telArr = data.split(',');
-    // console.log(telArr);
+    console.log(telArr);
     if (telArr[3] == 'T') {
         // TEAM_ID, MISSION_TIME, PACKET_COUNT, PACKET_TYPE, TP_ALTITUDE,
         // TP_TEMP, TP_VOLTAGE, GYRO_R, GYRO_P, GYRO_Y, ACCEL_P, ACCEL_P,
