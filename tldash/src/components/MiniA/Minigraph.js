@@ -8,16 +8,17 @@ const Minigraph = (props) => {
                 {props.subtype}
             </h4>
             <div className="flex-row flex items-end z-10 relative">
-                <h3 className="font-normal text-3xl pr-1">12</h3>
+                <h3 className="font-normal text-3xl pr-1">{props.alt}</h3>
                 <h4 className="font-bold text-base text-light-gray">
                     {props.unit}
                 </h4>
             </div>
             <div className="absolute bottom-0 inset-x-0 pb-4 pr-4 pl-4 pt-0">
-                <RealChart color={props.color} />
+                <RealChart color={props.color} subtype = {props.subtype}/>
             </div>
         </div>
     );
 }
 
 export default Minigraph;
+ 

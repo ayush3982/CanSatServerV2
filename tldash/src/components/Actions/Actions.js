@@ -1,6 +1,6 @@
 import React from "react";
 
-function Actions() {
+const Actions = () => {
     return (
         <div className="font-mulish flex flex-col">
             <h1 className="font-bold text-base mb-3 ml-2">Actions</h1>

@@ -1,3 +1,7 @@
+TEAM_ID = "1095";
+USERNAME = "1095";
+PASSWORD = "Riosfago833";
+
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -10,16 +14,26 @@ const ObjectsToCsv = require('objects-to-csv');
 const csvtojson = require('csvtojson');
 const fs = require('fs');
 
+const mqtt = require('mqtt');
+const client = mqtt.connect('mqtt://cansat.info', {
+    username: USERNAME,
+    password: PASSWORD,
+    port: 1883
+});
+
 // initialize the express server
 
 const app = express();
 
 // Taking care of Cross-Origin Resource Sharing
 
+let tString
+
 const port = new SerialPort({ path: 'COM5', baudRate: 9600 })
 
 const readSerialData = async (data) => {
     let tel = data
+    tString = data
     console.log('mango', tel);
     let telArr = data.split(',');
     console.log(telArr);
@@ -38,7 +52,7 @@ const readSerialData = async (data) => {
             GYRO_R : telArr[7], 
             GYRO_P : telArr[8], 
             GYRO_Y : telArr[9], 
-            ACCEL_P : telArr[10], 
+            ACCEL_R : telArr[10], 
             ACCEL_P : telArr[11],
             ACCEL_Y : telArr[12], 
             MAG_R : telArr[13], 
@@ -70,7 +84,7 @@ const readSerialData = async (data) => {
             GYRO_R : telArr[7], 
             GYRO_P : telArr[8], 
             GYRO_Y : telArr[9], 
-            ACCEL_P : telArr[10], 
+            ACCEL_R : telArr[10], 
             ACCEL_P : telArr[11],
             ACCEL_Y : telArr[12], 
             MAG_R : telArr[13], 
@@ -149,7 +163,7 @@ const readSerialData = async (data) => {
             GYRO_R : 'null', 
             GYRO_P : 'null', 
             GYRO_Y : 'null', 
-            ACCEL_P : 'null', 
+            ACCEL_R : 'null', 
             ACCEL_P : 'null',
             ACCEL_Y : 'null', 
             MAG_R : 'null', 
@@ -190,6 +204,18 @@ const parser = new ReadlineParser()
 port.pipe(parser)
 parser.on('data',readSerialData )
 
+client.on(
+    'connect',
+    () => {
+        client.subscribe('presence', (err) => {
+            if(!err){
+                setInterval(() => {
+                    client.publish('teams/' + TEAM_ID, tString);
+                }, 100);
+            }
+        });
+    }
+)
 
 
 app.use((req, res, next) => {

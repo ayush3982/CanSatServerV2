@@ -15,21 +15,21 @@ function MinigraphB(props) {
             <div className="flex-col flex items-start z-10 relative">
                 <div className="flex flex-row items-end">
                 <h4 className="font-bold text-base text-light-gray">R</h4>
-                <h3 className="font-normal text-3xl pr-1">502</h3>
+                <h3 className="font-normal text-3xl pr-1">{props.r}</h3>
                 </div>
                 <div className="flex flex-row items-end">
 
                 <h4 className="font-bold text-base text-light-gray">P</h4>
-                <h3 className="font-normal text-3xl pr-1">500</h3>
+                <h3 className="font-normal text-3xl pr-1">{props.p}</h3>
                 </div>
                 <div className="flex flex-row items-end">
 
                 <h4 className="font-bold text-base text-light-gray">Y</h4>
-                <h3 className="font-normal text-3xl pr-1">50</h3>
+                <h3 className="font-normal text-3xl pr-1">{props.y}</h3>
                 </div>
             </div>
             <div className="absolute bottom-0 inset-x-0 p-4">
-                <RealChartB color={props.color} />
+                <RealChartB color={props.color} /> 
             </div>
         </div>
     );

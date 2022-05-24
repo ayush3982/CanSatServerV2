@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import axios from "axios";
 import {
   Chart,
   LineController,
@@ -22,8 +23,32 @@ Chart.register(
   CategoryScale
 );
 
-function RealChartB(props) {
+const RealChartB = (props) => {
   const canvas = useRef(null);
+
+  const [tData, setTData] = useState();
+  const [tDataFull, setTDataFull] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            await axios.get('http://localhost:3000/tData.json')
+            .then(response => {
+                const n = response.data.length - 1; 
+                setTData(response.data[n])
+                setTDataFull(response.data)
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const id = setInterval(() => {
+        fetchData(); // <-- (3) invoke in interval callback
+    }, 100);
+    fetchData();
+    return () => clearInterval(id);
+}, [])
+
   const [slicedData, setSlicedData] = useState(new Array(5).fill(null));
 
   // generate fake data
@@ -42,7 +67,7 @@ function RealChartB(props) {
     const now = new Date();
     const dates = [];
     datar.forEach((v, i) => {
-      dates.push(new Date(now - 2000 - i * 2000));
+      dates.push(new Date(now - 2000 - i * 2000)); 
     });
     return dates;
   };

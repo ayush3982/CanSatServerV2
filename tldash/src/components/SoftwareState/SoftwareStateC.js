@@ -39,7 +39,7 @@ const SoftwareStateC = (props) => {
                     </div>
                 </div>
             )}
-            {currState == '0' && (
+            {currState == '0>' && (
                 <div>
                     <div className="flex gap-2 mb-1">
                         <div className="bg-red-300 rounded-xl px-2 border-4 font-black text-black border-black flex justify-center">0</div>
@@ -71,7 +71,7 @@ const SoftwareStateC = (props) => {
                     </div>
                 </div>
             )}
-            {currState == '1' && (
+            {currState == '1>' && (
                 <div>
                     <div className="flex gap-2 mb-1">
                         <div className="bg-transparent rounded-xl px-2 border-4 font-black text-neutral-300 border-neutral-300 flex justify-center">0</div>
@@ -103,7 +103,7 @@ const SoftwareStateC = (props) => {
                     </div>
                 </div>
             )}
-            {currState == '2' && (
+            {currState == '2>' && (
                 <div>
                     <div className="flex gap-2 mb-1">
                         <div className="bg-transparent rounded-xl px-2 border-4 font-black text-neutral-300 border-neutral-300 flex justify-center">0</div>
@@ -135,7 +135,7 @@ const SoftwareStateC = (props) => {
                     </div>
                 </div>
             )}
-            {currState == '3' && (
+            {currState == '3>' && (
                 <div>
                     <div className="flex gap-2 mb-1">
                         <div className="bg-transparent rounded-xl px-2 border-4 font-black text-neutral-300 border-neutral-300 flex justify-center">0</div>
@@ -167,7 +167,7 @@ const SoftwareStateC = (props) => {
                     </div>
                 </div>
             )}
-            {currState == '4' && (
+            {currState == '4>' && (
                 <div>
                     <div className="flex gap-2 mb-1">
                         <div className="bg-transparent rounded-xl px-2 border-4 font-black text-neutral-300 border-neutral-300 flex justify-center">0</div>
@@ -199,7 +199,7 @@ const SoftwareStateC = (props) => {
                     </div>
                 </div>
             )}
-            {currState == '5' && (
+            {currState == '5>' && (
                 <div>
                     <div className="flex gap-2 mb-1">
                         <div className="bg-transparent rounded-xl px-2 border-4 font-black text-neutral-300 border-neutral-300 flex justify-center">0</div>

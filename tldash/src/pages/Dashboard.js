@@ -15,7 +15,7 @@ function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await axios.get('http://localhost:3000/tData.json')
+                await axios.get('http://localhost:3000/fullData.json')
                 .then(response => {
                     const n = response.data.length - 1; 
                     setTData(response.data[n])

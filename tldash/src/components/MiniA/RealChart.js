@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import axios from "axios";
 import {
   Chart,
   LineController,
@@ -22,21 +23,144 @@ Chart.register(
   CategoryScale
 );
 
-function RealChart(props) {
+const RealChart = (props) => {
   const canvas = useRef(null);
   const [counter, setCounter] = useState(0);
   const [increment, setIncrement] = useState(0);
   const [range, setRange] = useState(10);
+  const [tData, setTData] = useState();
+  const [tDataFull, setTDataFull] = useState([]);
+  const [cDataFull, setCDataFull] = useState([]);
+  const [tpSoftState, setTpSoftState] = useState();
+  const [alt, setAlt] = useState([]);
+
+  // for(let i = 0; i < props.tData.length; i++) {
+  //   altData.push(props.tData[i].TP_ALTITUDE)
+  // }
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            await axios.get('http://localhost:3000/tData.json')
+            .then(response => {
+                const n = response.data.length - 1; 
+                setTData(response.data[n])
+                setTpSoftState(response.data[n].TP_SOFTWARE_STATE)
+               
+                setTDataFull(response.data)
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const id = setInterval(() => {
+        fetchData(); // <-- (3) invoke in interval callback
+    }, 100);
+    fetchData();
+    return () => clearInterval(id);
+}, [])
+
+useEffect(() => {
+  const fetchData = async () => {
+      try {
+          await axios.get('http://localhost:3000/cData.json')
+          .then(response => {
+              setCDataFull(response.data)
+          })
+      } catch (err) {
+          console.log(err);
+      }
+  }
+  const id = setInterval(() => {
+      fetchData(); // <-- (3) invoke in interval callback
+  }, 100);
+  fetchData();
+  return () => clearInterval(id);
+}, [])
+
 
   // Dummy data to be looped
-  const data = [
-    57.81, 57.75, 55.48, 54.28, 53.14, 52.25, 51.04, 52.49, 55.49, 56.87, 53.73,
-    56.42, 58.06, 55.62, 58.16, 55.22, 58.67, 60.18, 61.31, 63.25, 65.91, 64.44,
-    65.97, 62.27, 60.96, 59.34, 55.07, 59.85, 53.79, 51.92, 50.95, 49.65, 48.09,
-    49.81, 47.85, 49.52, 50.21, 52.22, 54.42, 53.42, 50.91, 58.52, 53.37, 57.58,
-    59.09, 59.36, 58.71, 59.42, 55.93, 57.71, 50.62, 56.28, 57.37, 53.08, 55.94,
-    55.82, 53.94, 52.65, 50.25,
-  ];
+  // const data = [
+  //   298.6, 297.3, 295.9, 294.5, 293.1, 291.8, 290.4, 289.0, 287.6, 286.3, 284.9, 283.5, 282.1, 280.8
+  // ];
+
+  let altData = []
+
+  for(let i = 0; i < tDataFull.length; i++) {
+    altData.push(Number(tDataFull[i].TP_ALTITUDE))
+  }
+
+  let cAltData = []
+
+  for(let i = 0; i < cDataFull.length; i++) {
+    cAltData.push(Number(cDataFull[i].ALTITUDE))
+  }
+
+  let cVolt = [];
+
+  for(let i = 0; i < cDataFull.length; i++) {
+    cVolt.push(Number(cDataFull[i].VOLTAGE))
+  }
+
+  let missionTime = []
+
+  for(let i = 0; i < tDataFull.length; i++) {
+    missionTime.push((tDataFull[i].MISSION_TIME))
+  }
+
+  let temperature = []
+
+  for(let i = 0; i < tDataFull.length; i++) {
+    temperature.push(Number(tDataFull[i].TP_TEMP))
+  }
+
+  let voltage = []
+
+  for(let i = 0; i < tDataFull.length; i++) {
+    voltage.push(Number(tDataFull[i].TP_VOLTAGE))
+  }
+
+  let pointingError = [];
+
+  for(let i = 0; i < tDataFull.length; i++) {
+    pointingError.push(Number(tDataFull[i].POINTING_ERROR))
+  }
+
+  let cTemp = []
+
+  for(let i = 0; i < cDataFull.length; i++) {
+    cTemp.push(Number(cDataFull[i].TEMP))
+  }
+
+  let data = [];
+
+  if(props.subtype == "Altitude") {
+    data = altData
+  }
+
+  if(props.subtype == "Voltage") {
+    data = voltage
+  }
+
+  if(props.subtype == "Temperature") {
+    data = temperature
+  }
+
+  if(props.subtype == "Pointing Error") {
+    data = pointingError
+  }
+
+  if(props.subtype == "Container Altitude") {
+    data = cAltData
+  }
+
+  if(props.subtype == "Container Voltage") {
+    data = cVolt
+  }
+
+  if(props.subtype == "Container Temperature") {
+    data = cTemp
+  }
 
   const [slicedData, setSlicedData] = useState(data.slice(0, range));
 
@@ -58,23 +182,17 @@ function RealChart(props) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCounter(counter + 1);
-    }, 2000);
+    }, 100);
     return () => clearInterval(interval);
   }, [counter]);
 
   // Loop through data array and update
   useEffect(() => {
-    setIncrement(increment + 1);
-    if (increment + range < data.length) {
-      setSlicedData(([x, ...slicedData]) => [
-        ...slicedData,
-        data[increment + range],
-      ]);
-    } else {
-      setIncrement(0);
-      setRange(0);
-    }
-    setSlicedLabels(([x, ...slicedLabels]) => [...slicedLabels, new Date()]);
+  
+    setSlicedData(data.slice(data.length - 5, data.length))
+    console.log("here", slicedData);
+
+    setSlicedLabels(missionTime.slice(missionTime.length - 5, missionTime.length));
     return () => setIncrement(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counter]);
@@ -143,7 +261,7 @@ function RealChart(props) {
             type: 'time',
             time: {
               parser: 'hh:mm:ss',
-              unit: 'second',
+              unit: 'millisecond',
               tooltipFormat: 'MMM DD, H:mm:ss a',
               displayFormats: {
                 second: 'mm:ss',
@@ -167,6 +285,9 @@ function RealChart(props) {
 
   return (
     <div className="">
+      {console.log("alt", altData)}
+      {/* {console.log(pointingError)} */}
+      {console.log("hui", missionTime)}
       <canvas ref={canvas} height={130}></canvas>
     </div>
   );
