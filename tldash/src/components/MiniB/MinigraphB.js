@@ -29,7 +29,7 @@ function MinigraphB(props) {
                 </div>
             </div>
             <div className="absolute bottom-0 inset-x-0 p-4">
-                <RealChartB color={props.color} /> 
+                <RealChartB color={props.color} subtype = {props.subtype}/> 
             </div>
         </div>
     );

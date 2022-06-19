@@ -29,7 +29,7 @@ const app = express();
 
 let tString
 
-const port = new SerialPort({ path: 'COM5', baudRate: 9600 })
+const port = new SerialPort({ path: 'COM10', baudRate: 9600 })
 
 const readSerialData = async (data) => {
     let tel = data
