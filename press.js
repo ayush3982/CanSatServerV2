@@ -7,7 +7,12 @@ let final = []
 
 const task = (message, i) => {
     setTimeout(() => {
-        console.log(message);
+        port.write(message, function(err) {
+            if (err) {
+              return console.log("Error on write: ", err.message);
+            }
+            console.log("Message sent successfully");
+          });
     }, 2000 * i);
 }
 
@@ -32,9 +37,3 @@ fs.readFile("./pressure.json", "utf-8", (err, data) => {
     }
 })
 
-// port.write(message, function(err) {
-//   if (err) {
-//     return console.log("Error on write: ", err.message);
-//   }
-//   console.log("Message sent successfully");
-// });

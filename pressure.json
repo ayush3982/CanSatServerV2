@@ -1,4 +1,7 @@
 [
+    
+    {"command" : "CMD,1095,SIMP,ENABLE"},
+    {"command" : "CMD,1095,SIMP,ACTIVATE"},
     {"command" : "CMD,1095,SIMP,101312"},
     {"command" : "CMD,1095,SIMP,101300"},
     {"command" : "CMD,1095,SIMP,101311"},

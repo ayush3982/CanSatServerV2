@@ -1,9 +1,5 @@
-var today = new Date();
-var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-console.log(JSON.stringify(time))
-
 var {SerialPort} = require("serialport");
-var message = time;
+var message = "CX,ON";
 
 const port = new SerialPort({ path: '/dev/cu.usbserial-AL017DBD', baudRate: 9600 })
 
