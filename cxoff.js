@@ -1,7 +1,7 @@
 var {SerialPort} = require("serialport");
 var message = "CX,OFF";
 
-const port = new SerialPort({ path: '/dev/cu.usbserial-AL017DBD', baudRate: 9600 })
+const port = new SerialPort({ path: '/dev/cu.usbserial-0001', baudRate: 9600 })
 
 port.write(message, function(err) {
   if (err) {

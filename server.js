@@ -28,7 +28,7 @@ const app = express();
 // Taking care of Cross-Origin Resource Sharing
 
 let tString
-
+let cString
 const port = new SerialPort({ path: '/dev/cu.usbserial-0001', baudRate: 9600 })
 
 const readSerialData = async (data) => {
@@ -122,6 +122,7 @@ const readSerialData = async (data) => {
         // TEAM_ID, MISSION_TIME, PACKET_COUNT, PACKET_TYPE, MODE,
         // TP_RELEASED, ALTITUDE, TEMP, VOLTAGE, GPS_TIME, GPS_LATITUDE,
         // GPS_LONGITUDE, GPS_ALTITUDE, GPS_SATS, SOFTWARE_STATE, CMD_ECHO
+        cString = tString
         const cData = [{
             TEAM_ID : telArr[0], 
             MISSION_TIME : telArr[1], 
@@ -211,6 +212,19 @@ client.on(
             if(!err){
                 setInterval(() => {
                     client.publish('teams/' + TEAM_ID, tString);
+                }, 100);
+            }
+        });
+    }
+)
+
+client.on(
+    'connect',
+    () => {
+        client.subscribe('presence', (err) => {
+            if(!err){
+                setInterval(() => {
+                    client.publish('teams/' + TEAM_ID, cString);
                 }, 100);
             }
         });
